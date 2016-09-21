@@ -49,6 +49,6 @@ fn main() {
 
         create_dir_all(dir_name).unwrap();
         let mut out_file = File::create(file_name).unwrap();
-        out_file.write_all(&json_part.to_owned().into_bytes()).unwrap();
+        out_file.write_all(&json_part.as_bytes()).unwrap();
     }
 }
