@@ -16,10 +16,14 @@ fn main() {
     let mut file = File::open(INPUT_NAME).unwrap();
     let mut reader = BufReader::new(&file);
     // println!("{:?}", &reader.lines().count());
-    for line in reader.lines().skip(1) {
+    for line in reader.lines() {
         let l = line.unwrap();
         let line_length = l.len();
-        let json_part = l[0..(line_length - 1)].to_owned();
+        // only first and last lines are going to be one character long
+        if line_length == 1 {
+            continue;
+        }
+        let json_part = &l[0..(line_length - 1)];
         let data = Json::from_str(&json_part).unwrap();
         let id = data.as_object().unwrap().get("id").unwrap().as_string().unwrap();
 
@@ -45,6 +49,6 @@ fn main() {
 
         create_dir_all(dir_name).unwrap();
         let mut out_file = File::create(file_name).unwrap();
-        out_file.write_all(&json_part.into_bytes()).unwrap();
+        out_file.write_all(&json_part.to_owned().into_bytes()).unwrap();
     }
 }
